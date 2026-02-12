@@ -1,1 +1,1 @@
-print('Version 1.0')
+print('Hotfix version')
