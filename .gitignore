@@ -1,2 +1,4 @@
 *.log
 /tmp/
+backups/
+*.tar.gz
