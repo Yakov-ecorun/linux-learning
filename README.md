@@ -1,26 +1,40 @@
-# Linux Network Lab
+# Linux Network Lab 
 
 ## Description
-This project demonstrates a simple network setup using VirtualBox.
+This project demonstrates basic Linux networking configuration:
+- static IP configuration
+- routing between machines
+- NAT setup using iptables
 
 ## Architecture
-- Server acts as router (NAT)
-- Clients connected via internal network
 
-## Technologies
-- Ubuntu
-- Netplan
-- iptables
+- server1 — acts as a router (NAT + forwarding)
+- client1 — internal network
+- client2 — internal network
 
-## Features
-- Internal network communication
-- NAT configuration
-- Internet access from clients
+## Configuration
 
-## Commands used
-
-### Enable routing
+### 1. Enable IP forwarding
+```bash
 echo 1 > /proc/sys/net/ipv4/ip_forward
 
-### NAT
+Configure NAT
+
 iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
+
+Configure forwarding rules
+
+iptables -A FORWARD -i enp0s8 -o enp0s3 -j ACCEPT
+iptables -A FORWARD -i enp0s3 -o enp0s8 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+Testing
+
+Ping between clients ✔
+Internet access via server ✔
+
+Technologies
+
+Linux (Ubuntu)
+VirtualBox
+iptables
+Netplan
